@@ -1,0 +1,22 @@
+.text {
+  margin: 12px 12px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+#popup {
+  background-color: #ffecb3;
+  border-style: solid;
+  border-color: #ff8f00;
+  border-width: 5px;
+  width: 300px;
+}
+
+ul {
+  list-style: square;
+}
+
+button {
+  align-content: right;
+}

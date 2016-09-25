@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html ng-app="tabby" ng-csp>
+    <head>
+        <link rel="stylesheet" href="css/popup.css">
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+
+        <!--<script src="js/lib/jquery-1.8.2.min.js"></script>-->
+        <script src="js/lib/angular.min.js"></script>
+
+        <script src="js/app/app.js" defer></script>
+        <script src="js/app/popup.js" defer></script>
+    </head>
+    <body id="popup">
+
+        <div class="text" ng-controller="TabbyCtrl">
+            <h2>Tabby</h2>
+            <div>{{message}}</div>
+
+            <div class="remove">
+                <h4>Duplicate tabs</h4>
+                <button id="remove" ng-click="removeAllDuplicates(duplicateIds)">x</button>
+            </div>
+
+            <ul>
+                <li ng-repeat="tab in allTabs">
+                    <div>{{tab.title}}
+                        <button id="remove" ng-click="removeTab(tab.id)">x</button>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>
