@@ -2,8 +2,7 @@
 	"name": "tabby",
 	"version": "0.1",
 	"manifest_version": 2,
-
-	"description": "Chrome extension to encourage and foster good browsing habits",
+	"description": "A simple Chrome extension to reign in those with bad tabits.",
 	"icons": {
 		"128": "./img/tabby_128.png"
 	},
@@ -13,12 +12,15 @@
 		"default_title": "tabby"
 	},
 	"content_scripts": [ {
-	"js": [ "js/lib/jquery-1.8.2.min.js", "js/app/content.js" ],
-	"matches": [ "*://*/*" ],
-	"run_at": "document_start"
-	} ],
+		"js": [ "js/lib/jquery-1.8.2.min.js", "js/app/content.js" ],
+		"matches": [ "*://*/*" ],
+		"run_at": "document_start"
+		}
+	],
 	"minimum_chrome_version": "18",
-	"permissions": [ "http://*/*", "https://*/*", "unlimitedStorage", "contextMenus", "cookies", "tabs", "notifications" ],
+	"permissions": [
+		"tabs", "notifications"
+	],
 	 "background": {
     "scripts": ["./js/app/popup.js"]
   }

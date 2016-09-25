@@ -1,23 +1,36 @@
-﻿app.service('TabbyService', function() {
+﻿//not working yet
+chrome.tabs.onCreated.addListener((tab) => {
+    chrome.tabs.query({}, (tabs) => {
+        if (tabs.length > 7) {
+            chrome.browserAction.setIcon({
+                "path": "./alert.png"
+            })
+        }
+    });
+});
+
+app.service('TabbyService', function() {
     this.getInfo = function(callback) {
         var model = {};
 
-        model.allTabs = [];
-        model.duplicateIds = [];
+        model.duplicateTabs = [];
+        model.exactDuplicateIds = [];
+        model.allDuplicateIds = [];
+        model.softDuplicates = [];
 
+        //find all open tabs using the chrome.tabs API
         chrome.tabs.query({},
 
             function (tabs) {
-                console.log(tabs);
-                model.title = tabs[0].title;
-                model.url = tabs[0].url;
 
+                //finds all EXACT duplicates
                 findDuplicates = (tabs) => {
                     let duplicates = [];
                     for (let i=0; i<tabs.length-1; i++) {
                         for (let j=i+1; j<tabs.length; j++) {
                             if (tabs[i].url === tabs[j].url) {
                                 duplicates.push(tabs[i]);
+                                model.allDuplicateIds.push(tabs[i].id);
                                 break;
                             }
                         }
@@ -25,37 +38,61 @@
                     return uniqueObj(duplicates);
                 }
 
+                //limits EXACT duplicates to unique duplicates
                 uniqueObj = (objArr) => {
                     let unique = [];
                     for (let i=0; i<objArr.length-1; i++) {
                         let dups = false;
                         for (let j=i+1; j<objArr.length; j++) {
                             if (objArr[i].url === objArr[j].url) {
-                                model.duplicateIds.push(objArr[i].id);
+                                model.exactDuplicateIds.push(objArr[i].id);
                                 dups = true;
                                 break;
                             }
                         }
                         if (dups === false) {
-                            model.allTabs.push(objArr[i]);
+                            model.duplicateTabs.push(objArr[i]);
                         }
                     }
-                    model.allTabs.push(objArr[objArr.length-1]);
+                    model.exactDuplicateIds.push(objArr[objArr.length-1].id);
+                    model.duplicateTabs.push(objArr[objArr.length-1]);
                 }
-                findDuplicates(tabs);
 
-                callback(model);
+                //finds all duplicates from same host ("soft duplicates")
+                //could be DRYer
+                findSoftDuplicates = (tabs) => {
+                    for (let i=0; i<tabs.length-1; i++) {
+                        for (let j=i+1; j<tabs.length; j++) {
+                            if (new URL(tabs[i].url).hostname === new URL(tabs[j].url).hostname && (tabs[i].url !== tabs[j].url)) {
+                                model.allDuplicateIds.push(tabs[i].id);
+                                model.softDuplicates.push(tabs[i]);
+                                break;
+                            }
+                        }
+                    }
+                },
 
-            });
+            //find all soft duplicates
+            findSoftDuplicates(tabs);
 
-        },
+            //find all exact duplicates
+            findDuplicates(tabs);
 
+            //send object to callback
+            callback(model);
+
+        });
+
+    },
+
+    //removes a single tab
     this.removeTab = function(tabId) {
         chrome.tabs.remove(tabId, function() {
             console.log('tabRemoved')
         })
     },
 
+    //removes all duplicate tabs
     this.removeAllDuplicates = function(tabIds) {
         chrome.tabs.remove(tabIds, function() {
             console.log('tabsRemoved');
@@ -63,30 +100,30 @@
     }
 });
 
-app.controller("TabbyCtrl", function ($scope, TabbyService) {
-
+app.controller("TabbyCtrl", function($scope, TabbyService) {
 
     $scope.message = "Welcome to Tabby";
 
+    //put all relevant info on the $scope
     TabbyService.getInfo((info) => {
-        $scope.title = info.title;
-        $scope.url = info.url;
-        $scope.allTabs = info.allTabs;
-        $scope.duplicateIds = [];
-        info.allTabs.forEach((tab) => {
-            $scope.duplicateIds.push(tab.id);
-        });
+        $scope.duplicateTabs = info.duplicateTabs;
+        $scope.softDuplicates = info.softDuplicates;
+        $scope.exactDuplicateIds = info.exactDuplicateIds;
+        $scope.allDuplicateIds = info.allDuplicateIds;
+
         $scope.$apply();
     });
 
-    $scope.removeTab = function(tabId) {
-        TabbyService.removeTab(tabId, function() {
+    //remove a single tab
+    $scope.removeTab = (tabId) => {
+        TabbyService.removeTab(tabId, () => {
             $scope.apply();
         });
     };
 
-    $scope.removeAllDuplicates = function(tabIds) {
-        TabbyService.removeTab(tabIds, function() {
+    //remove all duplicates (exact or soft)
+    $scope.removeAllDuplicates = (tabIds) => {
+        TabbyService.removeTab(tabIds, () => {
             $scope.apply();
         });
     };

@@ -15,21 +15,36 @@
     <body id="popup">
 
         <div class="text" ng-controller="TabbyCtrl">
-            <h2>Tabby</h2>
-            <div>{{message}}</div>
+            <h4>{{message}}</h4>
 
             <div class="remove">
-                <h4>Duplicate tabs</h4>
-                <button id="remove" ng-click="removeAllDuplicates(duplicateIds)">x</button>
+
+                <div ng-show="duplicateTabs.length>0 || softDuplicates.length>0">Kill all duplicates
+                <button class="btn" ng-click="removeAllDuplicates(allDuplicateIds)">x</button></div>
+
+                <div ng-show="duplicateTabs.length>0 || softDuplicates.length>0">Kill exact duplicates
+                <button class="btn" ng-click="removeAllDuplicates(exactDuplicateIds)">x</button></div>
+
             </div>
 
+            <h4>Exact Duplicates</h4>
             <ul>
-                <li ng-repeat="tab in allTabs">
+                <li ng-repeat="tab in duplicateTabs">
                     <div>{{tab.title}}
-                        <button id="remove" ng-click="removeTab(tab.id)">x</button>
+                        <button class="btn" ng-click="removeTab(tab.id)">x</button>
                     </div>
                 </li>
             </ul>
+
+            <h4>Soft Duplicates</h4>
+            <ul>
+                <li ng-repeat="tab in softDuplicates">
+                    <div>{{tab.title}}
+                        <button class="btn" ng-click="removeTab(tab.id)">x</button>
+                    </div>
+                </li>
+            </ul>
+
         </div>
     </body>
 </html>
