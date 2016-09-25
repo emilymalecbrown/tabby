@@ -1,9 +1,13 @@
-﻿//not working yet
+﻿var myAudio = new Audio();        // create the audio object
+myAudio.src = "../../airhorn.mp3";
+
+// not working yet
 chrome.tabs.onCreated.addListener((tab) => {
     chrome.tabs.query({}, (tabs) => {
         if (tabs.length > 7) {
+            myAudio.play();
             chrome.browserAction.setIcon({
-                "path": "./alert.png"
+                path: "alert.png"
             })
         }
     });
@@ -85,19 +89,21 @@ app.service('TabbyService', function() {
 
     },
 
-    //removes a single tab
-    this.removeTab = function(tabId) {
-        chrome.tabs.remove(tabId, function() {
+    //removes tabs
+    this.removeTab = function(tabsId) {
+        chrome.tabs.remove(tabsId, function() {
             console.log('tabRemoved')
         })
     },
 
-    //removes all duplicate tabs
-    this.removeAllDuplicates = function(tabIds) {
-        chrome.tabs.remove(tabIds, function() {
-            console.log('tabsRemoved');
-        })
-    }
+    this.removeAllTabs = function() {
+        chrome.tabs.query({"active": false, "pinned": false}, function(tabs) {
+            for (let i=0; i<tabs.length; i++) {
+                chrome.tabs.remove(tabs[i].id);
+            }
+        });
+    };
+
 });
 
 app.controller("TabbyCtrl", function($scope, TabbyService) {
@@ -110,7 +116,7 @@ app.controller("TabbyCtrl", function($scope, TabbyService) {
         $scope.softDuplicates = info.softDuplicates;
         $scope.exactDuplicateIds = info.exactDuplicateIds;
         $scope.allDuplicateIds = info.allDuplicateIds;
-
+        $scope.allButCurrent = info.allButCurrent;
         $scope.$apply();
     });
 
@@ -127,6 +133,10 @@ app.controller("TabbyCtrl", function($scope, TabbyService) {
             $scope.apply();
         });
     };
+
+    $scope.removeAllTabs = (tabIds) => {
+        TabbyService.removeAllTabs();
+    }
 
 });
 

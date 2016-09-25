@@ -19,6 +19,9 @@
 
             <div class="remove">
 
+                <div>Kill all but current
+                <button class="btn" ng-click="removeAllTabs()">x</button></div>
+
                 <div ng-show="duplicateTabs.length>0 || softDuplicates.length>0">Kill all duplicates
                 <button class="btn" ng-click="removeAllDuplicates(allDuplicateIds)">x</button></div>
 
@@ -36,7 +39,7 @@
                 </li>
             </ul>
 
-            <h4>Soft Duplicates</h4>
+            <h4>Soft Duplicates {{softDuplicates}}</h4>
             <ul>
                 <li ng-repeat="tab in softDuplicates">
                     <div>{{tab.title}}
