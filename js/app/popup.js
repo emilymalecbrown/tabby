@@ -1,13 +1,26 @@
 ﻿var myAudio = new Audio();        // create the audio object
-myAudio.src = "../../airhorn.mp3";
+myAudio.src = "../../img/airhorn.mp3";
 
-// not working yet
+// if you have too many tabs
+//1. changes icon to alert
+//2. plays annoying noise
 chrome.tabs.onCreated.addListener((tab) => {
     chrome.tabs.query({}, (tabs) => {
         if (tabs.length > 7) {
             myAudio.play();
             chrome.browserAction.setIcon({
-                path: "alert.png"
+                path: "../../img/alert.png"
+            })
+        }
+    });
+});
+
+//if you remove enough tabs... tabby comes back!
+chrome.tabs.onRemoved.addListener((tab) => {
+    chrome.tabs.query({}, (tabs) => {
+        if (tabs.length <= 7) {
+            chrome.browserAction.setIcon({
+                path: "../../img/tabby_16.png"
             })
         }
     });
@@ -96,6 +109,7 @@ app.service('TabbyService', function() {
         })
     },
 
+    //removes all but active and pinned tabs
     this.removeAllTabs = function() {
         chrome.tabs.query({"active": false, "pinned": false}, function(tabs) {
             for (let i=0; i<tabs.length; i++) {
@@ -116,7 +130,6 @@ app.controller("TabbyCtrl", function($scope, TabbyService) {
         $scope.softDuplicates = info.softDuplicates;
         $scope.exactDuplicateIds = info.exactDuplicateIds;
         $scope.allDuplicateIds = info.allDuplicateIds;
-        $scope.allButCurrent = info.allButCurrent;
         $scope.$apply();
     });
 
@@ -134,11 +147,9 @@ app.controller("TabbyCtrl", function($scope, TabbyService) {
         });
     };
 
+    //removes all but active and pinned tabs
     $scope.removeAllTabs = (tabIds) => {
         TabbyService.removeAllTabs();
     }
 
 });
-
-
-

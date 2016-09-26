@@ -2,11 +2,7 @@
 <html ng-app="tabby" ng-csp>
     <head>
         <link rel="stylesheet" href="css/popup.css">
-        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-        rel="stylesheet">
-
-        <!--<script src="js/lib/jquery-1.8.2.min.js"></script>-->
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <script src="js/lib/angular.min.js"></script>
 
         <script src="js/app/app.js" defer></script>
@@ -14,40 +10,40 @@
     </head>
     <body id="popup">
 
-        <div class="text" ng-controller="TabbyCtrl">
-            <h4>{{message}}</h4>
+    <div class="text" ng-controller="TabbyCtrl">
+        <h4>{{message}}</h4>
+        <div class="remove">
 
-            <div class="remove">
+            <label for="removeAll">Remove all tabs</label>
+            <button id="removeAll" class="btn" ng-click="removeAllTabs()">x</button>
 
-                <div>Kill all but current
-                <button class="btn" ng-click="removeAllTabs()">x</button></div>
+            <div ng-show="duplicateTabs.length>0 || softDuplicates.length>0">Kill all duplicates
+            <button class="btn" ng-click="removeAllDuplicates(allDuplicateIds)">x</button></div>
 
-                <div ng-show="duplicateTabs.length>0 || softDuplicates.length>0">Kill all duplicates
-                <button class="btn" ng-click="removeAllDuplicates(allDuplicateIds)">x</button></div>
-
-                <div ng-show="duplicateTabs.length>0 || softDuplicates.length>0">Kill exact duplicates
-                <button class="btn" ng-click="removeAllDuplicates(exactDuplicateIds)">x</button></div>
-
-            </div>
-
-            <h4>Exact Duplicates</h4>
-            <ul>
-                <li ng-repeat="tab in duplicateTabs">
-                    <div>{{tab.title}}
-                        <button class="btn" ng-click="removeTab(tab.id)">x</button>
-                    </div>
-                </li>
-            </ul>
-
-            <h4>Soft Duplicates {{softDuplicates}}</h4>
-            <ul>
-                <li ng-repeat="tab in softDuplicates">
-                    <div>{{tab.title}}
-                        <button class="btn" ng-click="removeTab(tab.id)">x</button>
-                    </div>
-                </li>
-            </ul>
+            <div ng-show="duplicateTabs.length>0 || softDuplicates.length>0">Kill exact duplicates
+            <button class="btn" ng-click="removeAllDuplicates(exactDuplicateIds)">x</button></div>
 
         </div>
+
+        <h4>Exact Duplicates</h4>
+        <ul>
+            <li ng-repeat="tab in duplicateTabs">
+                <div>{{tab.title}}
+                    <button class="btn" ng-click="removeTab(tab.id)">x</button>
+                </div>
+            </li>
+        </ul>
+
+        <h4>Soft Duplicates</h4>
+        <ul>
+            <li ng-repeat="tab in softDuplicates">
+                <div>{{tab.title}}
+                    <button class="btn" ng-click="removeTab(tab.id)">x</button>
+                </div>
+            </li>
+        </ul>
+
+    </div>
+
     </body>
 </html>

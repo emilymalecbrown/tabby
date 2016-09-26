@@ -1,6 +1,6 @@
 .text {
   margin: 12px 12px;
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
   word-wrap: break-word;
 }
@@ -11,6 +11,30 @@
   border-color: #ff8f00;
   border-width: 5px;
   width: 300px;
+}
+
+.btn {
+  position: absolute;
+  left: 55%;
+  line-height: 12px;
+  padding: 0;
+  border: none;
+  background: none;
+  width: 15px;
+  height: 15px;
+  border-radius: 10px;
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn:hover {
+  background: #ff8f00;
+}
+
+.remove {
+  position: relative;
 }
 
 ul {
