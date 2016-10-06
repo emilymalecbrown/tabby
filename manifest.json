@@ -11,15 +11,9 @@
 		"default_popup": "popup.html",
 		"default_title": "tabby"
 	},
-	"content_scripts": [ {
-		"js": [ "js/lib/jquery-1.8.2.min.js", "js/app/content.js" ],
-		"matches": [ "*://*/*" ],
-		"run_at": "document_start"
-		}
-	],
 	"minimum_chrome_version": "18",
 	"permissions": [
-		"tabs", "notifications"
+		"tabs", "notifications", "storage"
 	],
 	 "background": {
     "scripts": ["./js/app/popup.js"]

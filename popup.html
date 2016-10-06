@@ -11,11 +11,26 @@
     <body id="popup">
 
     <div class="text" ng-controller="TabbyCtrl">
-        <h4>{{message}}</h4>
+
+        <div class="sound">
+            <div class="settings">
+                <p>Sound?</p>
+            </div>
+            <div class="onoffswitch"">
+                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span ng-click="toggle(checked)">
+                </label>
+            </div>
+        </div>
+
+        <hr>
+
         <div class="remove">
 
-            <label for="removeAll">Remove all tabs</label>
-            <button id="removeAll" class="btn" ng-click="removeAllTabs()">x</button>
+            <div>Kill all tabs
+            <button id="removeAll" class="btn" ng-click="removeAllTabs()">x</button></div>
 
             <div ng-show="duplicateTabs.length>0 || softDuplicates.length>0">Kill all duplicates
             <button class="btn" ng-click="removeAllDuplicates(allDuplicateIds)">x</button></div>
@@ -25,23 +40,29 @@
 
         </div>
 
-        <h4>Exact Duplicates</h4>
-        <ul>
-            <li ng-repeat="tab in duplicateTabs">
-                <div>{{tab.title}}
-                    <button class="btn" ng-click="removeTab(tab.id)">x</button>
-                </div>
-            </li>
-        </ul>
+        <div class="duplicates">
+            <div class="exact" ng-show= "allDuplicateIds.length>0">
+                <h4>Exact Duplicates</h4>
+                <ul>
+                    <li ng-repeat="tab in duplicateTabs">
+                        <div> {{tab.title}}
+                            <button class="btn" ng-click="removeTab(tab.id)">x</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
 
-        <h4>Soft Duplicates</h4>
-        <ul>
-            <li ng-repeat="tab in softDuplicates">
-                <div>{{tab.title}}
-                    <button class="btn" ng-click="removeTab(tab.id)">x</button>
-                </div>
-            </li>
-        </ul>
+            <div class="soft" ng-show="softDuplicates.length>0">
+                <h4>Soft Duplicates</h4>
+                <ul>
+                    <li ng-repeat="tab in softDuplicates">
+                        <div>{{tab.title}}
+                            <button class="btn" ng-click="removeTab(tab.id)">x</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
     </div>
 
