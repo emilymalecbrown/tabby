@@ -6,8 +6,10 @@ A simple Chrome extension to reign in those with bad tabits.
 
 This Chrome extension keeps track of your exact (same url), and soft (same hostname) tab duplicates and give you the ability to quickly close them.
 
-Display popup
-<img src="./img/before.png"><img src="./img/after.png"
+Before <br>
+<img src="./img/before.png" height=400px>
+<br> After <br>
+<img src="./img/after.png" height=400px>
 
 <hr>
 
