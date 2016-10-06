@@ -4,7 +4,11 @@ A simple Chrome extension to reign in those with bad tabits.
 
 <hr>
 
-This Chrome extension keeps track of your exact (same url), and soft (same hostname) tab duplicates and gives you the ability to quickly close them. Closing all tabs retains your current active tab and any pinned tabs. The toolbar icon changes from a kitten to a pesky alert icon when your browsing is getting out of hand (in this version greater than 7 tabs), and also sounds a blowhorn. 
+This Chrome extension keeps track of your exact (same url), and soft (same hostname) tab duplicates and gives you the ability to quickly close them. 
+
+If you're feeling brave, you can also close all tabs at once, only retaining your current active tab and any pinned tabs. 
+
+The toolbar icon changes from a kitten to a pesky alert icon when your browsing is getting out of hand (in this version greater than 7 tabs), and also sounds a blowhorn. 
 
 Before <br>
 <img src="./img/before.png" height=400px>
